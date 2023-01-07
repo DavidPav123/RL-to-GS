@@ -120,9 +120,7 @@ prompt.get(
       //Detect if something happens
       if (json.event == "game:update_state") {
         //Wirte to a file and save it in the current directory
-        var stream = fs.createWriteStream(
-          `game${fileNum}.json`
-        );
+        var stream = fs.createWriteStream(`game_data\\game${fileNum}.json`);
         stream.once("open", function (fd) {
           stream.write(message);
           stream.end();

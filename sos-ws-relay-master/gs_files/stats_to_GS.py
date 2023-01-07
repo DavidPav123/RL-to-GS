@@ -28,10 +28,10 @@ cur_file_contents: str = ""
 
 
 def get_latest_file() -> str:
-    list_of_files: list[str] = listdir("sos-ws-relay-master")
+    list_of_files: list[str] = listdir("sos-ws-relay-master\game_data")
     for i in range(len(list_of_files)):
         # append the path to the file name
-        list_of_files[i] = f"sos-ws-relay-master\{list_of_files[i]}"
+        list_of_files[i] = f"sos-ws-relay-master\game_data\{list_of_files[i]}"
 
     latest_file: str = max(list_of_files, key=getctime)
     return latest_file
@@ -89,7 +89,8 @@ if __name__ == "__main__":
             new_f: TextIOWrapper = open(cur_file_name)
             new_data: dict = load(new_f)
         except JSONDecodeError:
-            print("Error")
+            print("Did not update")
+            continue
 
         if data != new_data:
             update_sheet(read_json_file(cur_file_name), range_name)
