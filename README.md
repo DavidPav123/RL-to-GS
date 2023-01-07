@@ -1,23 +1,17 @@
-# ESU ROCKET LEAGUE OVERLAY & SCOREBOARD 
+# ESU ROCKET LEAGUE OVERLAY & SCOREBOARD + Google Sheets
 
-## Overview
-This is a web-based Rocket League overlay and scoreboard made to replace Rocket League's own in-game spectator overlay. It is based off the [SOS Overlay System](https://gitlab.com/bakkesplugins/sos) which creates a websocket for Rocket League to connect and send data to so that it can be displayed in real-time through the overlay.
+## Setup 
+1. Setup the program the same way you would set it up from the original scoreboard program at: https://github.com/jon-valencia/ESU-RL-Overlay.
 
-## Pre-reqs
-To get started, open a command prompt/powershell and type `node -v` to check if you have node installed. If it is not installed go to https://nodejs.org/en/ to download it so you can continue with setup. Next make sure to download [BakkesMod](https://bakkesmod.com/) as this will be what allows the in-game data to be displayed on the browser.
+2. Once that is setup run the following command in a terminal to install the google sheets python api:  
+       
+       pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+       
+3. In google_sheets_push.py change variable SPREADSHEET_ID to the id of the spreadsheet you want your statistics to be dumped into and change the variables under pages_to_update to the names of the pages where you want stats to be stored.
 
-Also if you made it this far without doing so, download Rocket League...
+4. Run the stats_to_GS.py file, you will be prompted to login and once logged in the program will generate a token.json file. Make sure to move this file into the gs_files folder.
 
-## Setup
-First things first, go to https://github.com/jon-valencia/ESU-RL-Overlay and download the ENTIRE repository. From there you will want to make sure that you have Rocket League and BakkesMod running and then you can go to where you downloaded the repository and open the folder named *sos-ws-relay-master*. From there open a command prompt/powershell (Shift+RClick anywhere in the folder) and type `node ws-relay.js` and press enter until you have connected to Rocket League (example below).
-```
-PS C:\ESU-RL-Overlay\sos-ws-relay-master> node ws-relay.js
-prompt: Relay delay in milliseconds (used in cloud productions):  (0)
-prompt: Port number for this websocket server:  (49322)
-prompt: Hostname:Port that Rocket League is running on:  (localhost:49122)
- INFO  Opened WebSocket server on port 49322
- SUCCESS  Connected to Rocket League on localhost:49122
- LOG  0> Sent sos:version
-```
+5. When ready to log stats, run the stats_to_GS.py file once again. Make sure to do this before starting the server through the terminal or the program will not begin logging until a game ends.
 
-After connecting to Rocket League, you can go back to the *ESU-RL-Overlay* folder and open up the overlay (and scoreboard) HTML files and start a custom game to verify that it is functioning. After verifying functionality, you can then set it up in your broadcasting software of choice as a browser source.
+6. Before logging stats again make sure to delete any files in the game_data folder asside from the placeholder file, i.e. game0.json, game1.json, etc.
+
