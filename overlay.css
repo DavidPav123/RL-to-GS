@@ -1,0 +1,183 @@
+body {
+    font-family: 'Montserrat';
+    font-size: 14pt;
+    font-weight: bold;
+    color: white;
+    background-color: green;
+    background-image: url(https://cdn.discordapp.com/attachments/820605164431081474/1024307927856709722/ESU_In_Game_Overlay_v2.png);
+}
+
+#scoreboard {
+    font-size: 28pt;
+    text-align: center;
+    margin-left: 125px;
+    margin-top: 50px;
+}
+
+#blueName, #orangeName {
+    visibility: hidden; /* Team names hidden because not needed for ESU package, can be used if needed */
+}
+
+#row1 {
+    margin-top: 5px;
+}
+
+#row2 {
+    margin-top: 6px;
+}
+
+#clock {
+    font-size: 36pt!important;
+    margin-top: 10px;
+}
+
+#blueScore, #orangeScore {
+    width: 70px;
+    margin-left: -1.25rem;
+    margin-top: 5px;
+}
+
+.ui.progress {
+    height: 12.5px;
+    margin-bottom: 2.25em;
+    margin-top: 0.25em;
+}
+
+.ui.progress .bar {
+    min-width: 0!important;
+    background: white;
+}
+
+.ui.small.progress .bar {
+    height: 12.5px;
+}
+
+#boostBars {
+    width: 1850px!important;
+    margin-top: 665px;
+}
+
+#boostBars>.row {
+    padding-top: 0.1rem;
+    padding-bottom: 0;
+}
+
+#boostBars>.row>.column {
+    width: 180px;
+}
+
+#boostRow {
+    padding-bottom: 0.75rem!important;
+}
+
+#orangePlayer0, #orangePlayer1, #orangePlayer2, 
+#orangeBoost0, #orangeBoost1, #orangeBoost2,
+#orangeBoostBar0, #orangeBoostBar1, #orangeBoostBar2 {
+    text-align: right;
+}
+
+#orangePlayer0, #orangePlayer1, #orangePlayer2 {
+    float: right;
+}
+
+#blueBoost0, #blueBoost1, #blueBoost2, 
+#orangeBoost0, #orangeBoost1, #orangeBoost2 {
+    margin-top: -0.5rem;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#boostBars [class*="left floated"].column {
+    margin-right: 0;
+}
+
+#specPlayer {
+    margin-top: -80px;
+    width: 520px!important;
+    position: relative;
+    bottom: 0;
+    visibility: visible;
+}
+
+#specPlayer>.row {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+#specPlayer>.row>.column {
+    width: 65px;
+    text-align: center;
+}
+
+#specPlayerTitles {
+    font-size: 10pt!important;
+}
+
+#specPlayerStats {
+    font-size: 16pt;
+}
+
+#specPlayerBoost {
+    font-size: 16pt;
+    margin-top: 0.25rem;
+}
+
+#specPlayerName {
+    font-size: 20pt;
+    margin-top: -0.75rem;
+    margin-left: 25px;
+}
+
+#specPlayerBar {
+    width: 450px!important;
+    padding-top: 10px;
+    text-align: right;
+}
+
+#replayBox {
+    margin-top: -80px;
+    position: relative;
+    width:650px!important;
+    bottom: 0;
+    visibility: hidden;
+    font-size: 16pt;
+}
+
+#replayBox>.column {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* MIGHT NEED FOR LATER BUT PROBABLY NOT, ALSO HERE TO REMIND YOURSELF OF THE PAIN
+.plyaerBoost .column {
+    width: 30px;
+}
+
+.ui.progress:last-child {
+    margin: 0 0 0;
+}
+
+.ui.grid>.row>.column {
+    width: 178px;
+}
+
+.ui.padded.boost.grid>.row {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.ui.padded.boost.grid>.boost.row {
+    padding-top: 0;
+    padding-bottom: 1.75rem;
+}
+
+.ui.padded.boost.grid>.row .playerBoost.column {
+    width: 60px;
+}
+
+.ui.padded.boost.grid {
+    padding-top: 680px;
+    padding-left: 35px;
+    padding-right: 35px;
+} 
+*/

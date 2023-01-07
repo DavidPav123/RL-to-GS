@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ESU RL Overlay</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.1/underscore-min.js"
+    integrity="sha512-ZuOjyqq409+q6uc49UiBF3fTeyRyP8Qs0Jf/7FxH5LfhqBMzrR5cwbpDA4BgzSo884w6q/+oNdIeHenOqhISGw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="overlay.css">
+</head>
+
+<body>
+  <div class="ui grid" id="scoreboard">
+    <div class="row" id="row1">
+      <div class="two wide column" id="clock">2:47</div>
+      <div class="two wide column" id="blueName">VTU</div> 
+      <div class="column" id="blueScore">10</div>
+    </div>
+    <div class="row" id="row2">
+      <div class="two wide column"></div>
+      <div class="two wide column" id="orangeName">BER</div> 
+      <div class="column" id="orangeScore">8</div>
+    </div>
+  </div>
+  <div class="ui centered grid container" id="boostBars">
+    <div class="row">
+      <div class="left floated column"><nobr id="bluePlayer0">USERNAME0</nobr></div>
+      <div class="right floated column"><nobr id="orangePlayer0">USERNAME0</nobr></div>
+    </div>
+    <div class="row" id="boostRow">
+      <div class="left floated column">
+        <div class="ui small progress" id="blueBoostBar0">
+          <div class="bar"></div>
+        </div>
+      </div>
+      <div class="left floated column" id="blueBoost0">100</div>
+      <div class="right floated column" id="orangeBoost0">100</div>
+      <div class="column">
+        <div class="ui small progress" id="orangeBoostBar0">
+          <div class="bar"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="left floated column"><nobr id="bluePlayer1">USERNAME1</nobr></div>
+      <div class="right floated column"><nobr id="orangePlayer1">USERNAME1</nobr></div>
+    </div>
+    <div class="row" id="boostRow">
+      <div class="left floated column">
+        <div class="ui small progress" id="blueBoostBar1">
+          <div class="bar"></div>
+        </div>
+      </div>
+      <div class="left floated column" id="blueBoost1">100</div>
+      <div class="right floated column" id="orangeBoost1">100</div>
+      <div class="column">
+        <div class="ui small progress" id="orangeBoostBar1">
+          <div class="bar"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="left floated column"><nobr id="bluePlayer2">USERNAME2</nobr></div>
+      <div class="right floated column"><nobr id="orangePlayer2">USERNAME2</nobr></div>
+    </div>
+    <div class="row" id="boostRow">
+      <div class="left floated column">
+        <div class="ui small progress" id="blueBoostBar2">
+          <div class="bar"></div>
+        </div>
+      </div>
+      <div class="left floated column" id="blueBoost2">100</div>
+      <div class="right floated column" id="orangeBoost2">100</div>
+      <div class="column">
+        <div class="ui small progress" id="orangeBoostBar2">
+          <div class="bar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui centered grid container inverted segment" id="specPlayer">
+    <div class="row" id="specPlayerTitles">
+      <div class="left floated column"></div>
+      <div class="right floated column">Score</div>
+      <div class="column">Goals</div>
+      <div class="column">Assists</div>
+      <div class="column">Saves</div>
+    </div>
+    <div class="row" id="specPlayerStats">
+      <nobr><div class="left floated column" id="specPlayerName">USERNAME</div></nobr>
+      <div class="right floated column" id="specPlayerScore">0</div>
+      <div class="column" id="specPlayerGoals">0</div>
+      <div class="column" id="specPlayerAssists">0</div>
+      <div class="column" id="specPlayerSaves">0</div>
+    </div>
+    <div class="row" id="specBoost">
+      <div class="column" id="specPlayerBoost">100</div>
+      <div class="column" id="specPlayerBar">
+        <div class="ui small progress" id="specPlayerBoostBar">
+          <div class="bar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui equal width grid container" id="replayBox">
+    <div class="column" id="goalPic">
+      <img style="vertical-align:top" src="https://media.discordapp.net/attachments/820605164431081474/1004793158477021234/Scorer_logo.png">
+      <div id="goalScorer">USERNAME</div>
+    </div>
+    <div class="column" id="assistPic">
+      <img style="vertical-align:top" src="https://media.discordapp.net/attachments/820605164431081474/1004793158808379422/Assist_logo.png">
+      <div id="goalAssister">USERNAME</div>
+    </div>
+    <div class="column" id="ballSpeed">100KPH</div>
+  </div>
+  <script>
+    /***************************************************************************************
+    *    Title: SOS Plugin 
+    *    Availability: https://gitlab.com/bakkesplugins/sos
+    *    Lines: 131-250
+    ***************************************************************************************/
+    const WsSubscribers = {
+      __subscribers: {},
+      websocket: undefined,
+      webSocketConnected: false,
+      registerQueue: [],
+      init: function (port, debug, debugFilters) {
+        port = port || 49322;
+        debug = debug || false;
+        if (debug) {
+          if (debugFilters !== undefined) {
+            console.warn("WebSocket Debug Mode enabled with filtering. Only events not in the filter list will be dumped");
+          } else {
+            console.warn("WebSocket Debug Mode enabled without filters applied. All events will be dumped to console");
+            console.warn("To use filters, pass in an array of 'channel:event' strings to the second parameter of the init function");
+          }
+        }
+        WsSubscribers.webSocket = new WebSocket("ws://localhost:" + port);
+        WsSubscribers.webSocket.onmessage = function (event) {
+          let jEvent = JSON.parse(event.data);
+          if (!jEvent.hasOwnProperty('event')) {
+            return;
+          }
+          let eventSplit = jEvent.event.split(':');
+          let channel = eventSplit[0];
+          let event_event = eventSplit[1];
+          if (debug) {
+            if (!debugFilters) {
+              console.log(channel, event_event, jEvent);
+            } else if (debugFilters && debugFilters.indexOf(jEvent.event) < 0) {
+              console.log(channel, event_event, jEvent);
+            }
+          }
+          WsSubscribers.triggerSubscribers(channel, event_event, jEvent.data);
+        };
+        WsSubscribers.webSocket.onopen = function () {
+          WsSubscribers.triggerSubscribers("ws", "open");
+          WsSubscribers.webSocketConnected = true;
+          WsSubscribers.registerQueue.forEach((r) => {
+            WsSubscribers.send("wsRelay", "register", r);
+          });
+          WsSubscribers.registerQueue = [];
+        };
+        WsSubscribers.webSocket.onerror = function () {
+          WsSubscribers.triggerSubscribers("ws", "error");
+          WsSubscribers.webSocketConnected = false;
+        };
+        WsSubscribers.webSocket.onclose = function () {
+          WsSubscribers.triggerSubscribers("ws", "close");
+          WsSubscribers.webSocketConnected = false;
+        };
+      },
+      /**
+       * Add callbacks for when certain events are thrown
+       * Execution is guaranteed to be in First In First Out order
+       * @param channels
+       * @param events
+       * @param callback
+       */
+      subscribe: function (channels, events, callback) {
+        if (typeof channels === "string") {
+          let channel = channels;
+          channels = [];
+          channels.push(channel);
+        }
+        if (typeof events === "string") {
+          let event = events;
+          events = [];
+          events.push(event);
+        }
+        channels.forEach(function (c) {
+          events.forEach(function (e) {
+            if (!WsSubscribers.__subscribers.hasOwnProperty(c)) {
+              WsSubscribers.__subscribers[c] = {};
+            }
+            if (!WsSubscribers.__subscribers[c].hasOwnProperty(e)) {
+              WsSubscribers.__subscribers[c][e] = [];
+              if (WsSubscribers.webSocketConnected) {
+                WsSubscribers.send("wsRelay", "register", `${c}:${e}`);
+              } else {
+                WsSubscribers.registerQueue.push(`${c}:${e}`);
+              }
+            }
+            WsSubscribers.__subscribers[c][e].push(callback);
+          });
+        })
+      },
+      clearEventCallbacks: function (channel, event) {
+        if (WsSubscribers.__subscribers.hasOwnProperty(channel) && WsSubscribers.__subscribers[channel].hasOwnProperty(event)) {
+          WsSubscribers.__subscribers[channel] = {};
+        }
+      },
+      triggerSubscribers: function (channel, event, data) {
+        if (WsSubscribers.__subscribers.hasOwnProperty(channel) && WsSubscribers.__subscribers[channel].hasOwnProperty(event)) {
+          WsSubscribers.__subscribers[channel][event].forEach(function (callback) {
+            if (callback instanceof Function) {
+              callback(data);
+            }
+          });
+        }
+      },
+      send: function (channel, event, data) {
+        if (typeof channel !== 'string') {
+          console.error("Channel must be a string");
+          return;
+        }
+        if (typeof event !== 'string') {
+          console.error("Event must be a string");
+          return;
+        }
+        if (channel === 'local') {
+          this.triggerSubscribers(channel, event, data);
+        } else {
+          let cEvent = channel + ":" + event;
+          WsSubscribers.webSocket.send(JSON.stringify({
+            'event': cEvent,
+            'data': data
+          }));
+        }
+      }
+    };
+    
+    
+    $(() => {
+      WsSubscribers.init(49322, true);
+      WsSubscribers.subscribe("game", "update_state", (d) => {
+        // Scoreboard + Timer + Team Names
+        $('#blueScore').text(d['game']['teams'][0]['score']);
+        $('#orangeScore').text(d['game']['teams'][1]['score']);
+        //$('#blueName').text(d['game']['teams'][0]['name']); commented out names because of issue 
+        //$('#orangeName').text(d['game']['teams'][1]['name']); with super long team names
+
+        let secs = d['game']['time_seconds'];
+        let mins = Math.floor(secs / 60);
+        let rSecs = secs - mins * 60;
+        let fSecs = rSecs.toLocaleString('en-US', {
+          minimumIntegerDigits: 2,
+          useGrouping: false
+        })
+        if (d['game']['isOT'] === true) $("#clock").text("+" + mins + ":" + fSecs);
+        else $('#clock').text(mins + ":" + fSecs);
+
+        // group players by team
+        let team = _.groupBy(d['players'], 'team');
+
+        // iterate through players and fill information
+        // blue
+        for (let i = 0; i < 3; i++) {
+          $(`#blueBoostBar${i}`).progress({
+            percent: d['players'][team[0][i]['id']]['boost'],
+            autoSuccess: false
+          });
+          $(`#bluePlayer${i}`).text(d['players'][team[0][i]['id']]['name']);
+          $(`#blueBoost${i}`).text(d['players'][team[0][i]['id']]['boost']);
+          resize_to_fit(`#bluePlayer${i}`, 160);
+        }
+        // orange
+        for (let i = 0; i < 3; i++) {
+          $(`#orangeBoostBar${i}`).progress({
+            percent: d['players'][team[1][i]['id']]['boost'],
+            autoSuccess: false
+          });
+          $(`#orangePlayer${i}`).text(d['players'][team[1][i]['id']]['name']);
+          $(`#orangeBoost${i}`).text(d['players'][team[1][i]['id']]['boost']);
+          resize_to_fit(`#orangePlayer${i}`, 160);
+        }
+
+        // Displays the stats of the player being spectated
+        if (d['game']['target'] === '' || d['game']['isReplay'] === true) {
+          $('#specPlayer').css('visibility', 'hidden'); // if no spec player, no stats
+        }
+        else {
+          $('#specPlayer').css('visibility', 'visible');
+          resize_to_fit(`#specPlayerName`, 215);
+          // Change boost bar color based on team that is being spectated
+          $('#specPlayerName').text(d['players'][d['game']['target']]['name']);
+          $('#specPlayerScore').text(d['players'][d['game']['target']]['score']);
+          $('#specPlayerGoals').text(d['players'][d['game']['target']]['goals']);
+          $('#specPlayerAssists').text(d['players'][d['game']['target']]['assists']);
+          $('#specPlayerSaves').text(d['players'][d['game']['target']]['saves']);
+          
+          $('#specPlayerBoost').text(d['players'][d['game']['target']]['boost']);
+          $("#specPlayerBoostBar").progress({
+            percent: d['players'][d['game']['target']]['boost'],
+            autoSuccess: false
+          });
+
+          if (d['players'][d['game']['target']]['team'] === 0) {
+            $('#specPlayer').css('background', '#064ec7');
+          } else {
+            $('#specPlayer').css('background', '#f57d17');
+          }
+        }
+      });
+      WsSubscribers.subscribe("game", "goal_scored", (d) => {
+        let goalSpeed = Math.trunc(d['goalspeed']);
+        $('#goalScorer').css('display', 'inline');
+        $('#goalScorer').text(`${d['scorer']['name']}`);
+        resize_to_fit(`#goalScorer`, 160);
+        $('#ballSpeed').text(goalSpeed + 'KPH');
+        if (d['assister']['name'] != '') { 
+          $('#goalAssister').text(`${d['assister']['name']}`);
+          WsSubscribers.subscribe("game", "replay_start", () => {
+            $('body').css('background-image', 'url(https://cdn.discordapp.com/attachments/820605164431081474/1024307927449870510/ESU_Replay_Overlay_v2.png)');
+            $('#replayBox').css('visibility', 'visible');
+            $('#assistPic').css('visibility', 'visible');
+            $('#goalAssister').css('visibility', 'visible');
+            $('#assistPic').css('display', 'inline');
+            $('#goalAssister').css('display', 'inline');
+            resize_to_fit(`#goalAssister`, 160);
+          });
+          WsSubscribers.subscribe("game", "replay_end", () => {
+            $('body').css('background-image', 'url(https://cdn.discordapp.com/attachments/820605164431081474/1024307927856709722/ESU_In_Game_Overlay_v2.png)');
+            $('#replayBox').css('visibility', 'hidden');
+            $('#assistPic').css('visibility', 'hidden');
+            $('#goalAssister').css('visibility', 'hidden');
+          });
+        } else {
+          WsSubscribers.subscribe("game", "replay_start", () => {
+            $('body').css('background-image', 'url(https://cdn.discordapp.com/attachments/820605164431081474/1024307927449870510/ESU_Replay_Overlay_v2.png)');
+            $('#replayBox').css('visibility', 'visible');
+            $('#assistPic').css('display', 'none');
+            $('#goalAssister').css('display', 'none');
+          });
+          WsSubscribers.subscribe("game", "replay_end", () => {              
+            $('body').css('background-image', 'url(https://cdn.discordapp.com/attachments/820605164431081474/1024307927856709722/ESU_In_Game_Overlay_v2.png)');
+            $('#replayBox').css('visibility', 'hidden');
+            $('#assistPic').css('visibility', 'hidden');
+            $('#goalAssister').css('visibility', 'hidden');
+            $('#assistPic').css('visibility', 'hidden');
+            $('#goalAssister').css('visibility', 'hidden');
+            $('#assistPic').css('display', 'inline');
+            $('#goalAssister').css('display', 'inline');
+          });
+        }
+      });
+      $(document).ready(function() {
+        /*for (let i = 0; i < 3; i++) {
+          resize_to_fit(`#bluePlayer${i}`, 160);
+          resize_to_fit(`#orangePlayer${i}`, 160);
+        }
+        resize_to_fit(`#specPlayerName`, 215);
+        resize_to_fit(`#goalAssister`, 160);
+        resize_to_fit(`#goalScorer`, 160);*/
+        console.log(textWidth('#bluePlayer0'));
+      });
+      // recursive function to shrink font-size of selected element until it's width < width
+      function resize_to_fit(text, width) {
+        var fontsize = $(text).css('font-size');
+
+        if (textWidth(text) >= width) {
+          $(text).css('fontSize', parseFloat(fontsize) - 1);
+          resize_to_fit(text, width);
+        }
+      }
+      // calculate width of a given text string using <span>
+      function textWidth(text) {
+        var html_org = $(text).html();
+        var html_calc = '<span>' + html_org + '</span>';
+        $(text).html(html_calc);
+        var width = $(text).find('span:first').width();
+        $(text).html(html_org);
+        return width;
+      }
+    });
+  </script>
+</body>
+</html>

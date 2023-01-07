@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ESU RL Overlay</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.1/underscore-min.js"
+        integrity="sha512-ZuOjyqq409+q6uc49UiBF3fTeyRyP8Qs0Jf/7FxH5LfhqBMzrR5cwbpDA4BgzSo884w6q/+oNdIeHenOqhISGw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="scoreboard.css">
+</head>
+
+<body>
+    <div class="ui centered grid container" id="finalScore">
+        <div class="column" id="blueScore">0</div>
+        <div class="two wide column"></div>
+        <div class="column" id="orangeScore">0</div>
+    </div>
+    <div class="ui centered grid container" id="scoreboard">
+        <div class="row">
+            <div class="column">
+                <nobr id="bluePlayer0">USERNAME</nobr>
+            </div>
+            <div class="column">
+                <nobr id="bluePlayer1">USERNAME</nobr>
+            </div>
+            <div class="column">
+                <nobr id="bluePlayer2">USERNAME</nobr>
+            </div>
+            <div class="two wide column"></div>
+            <div class="column">
+                <nobr id="orangePlayer0">USERNAME</nobr>
+            </div>
+            <div class="column">
+                <nobr id="orangePlayer1">USERNAME</nobr>
+            </div>
+            <div class="column">
+                <nobr id="orangePlayer2">USERNAME</nobr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column" id="blueScore0">0</div>
+            <div class="column" id="blueScore1">0</div>
+            <div class="column" id="blueScore2">0</div>
+            <div class="two wide column">SCORE</div>
+            <div class="column" id="orangeScore0">0</div>
+            <div class="column" id="orangeScore1">0</div>
+            <div class="column" id="orangeScore2">0</div>
+        </div>
+        <div class="row">
+            <div class="column" id="blueGoals0">0</div>
+            <div class="column" id="blueGoals1">0</div>
+            <div class="column" id="blueGoals2">0</div>
+            <div class="two wide column">GOALS</div>
+            <div class="column" id="orangeGoals0">0</div>
+            <div class="column" id="orangeGoals1">0</div>
+            <div class="column" id="orangeGoals2">0</div>
+        </div>
+        <div class="row">
+            <div class="column" id="blueAsst0">0</div>
+            <div class="column" id="blueAsst1">0</div>
+            <div class="column" id="blueAsst2">0</div>
+            <div class="two wide column">ASSISTS</div>
+            <div class="column" id="orangeAsst0">0</div>
+            <div class="column" id="orangeAsst1">0</div>
+            <div class="column" id="orangeAsst2">0</div>
+        </div>
+        <div class="row">
+            <div class="column" id="blueSaves0">0</div>
+            <div class="column" id="blueSaves1">0</div>
+            <div class="column" id="blueSaves2">0</div>
+            <div class="two wide column">SAVES</div>
+            <div class="column" id="orangeSaves0">0</div>
+            <div class="column" id="orangeSaves1">0</div>
+            <div class="column" id="orangeSaves2">0</div>
+        </div>
+        <div class="row">
+            <div class="column" id="blueShots0">0</div>
+            <div class="column" id="blueShots1">0</div>
+            <div class="column" id="blueShots2">0</div>
+            <div class="two wide column">SHOTS</div>
+            <div class="column" id="orangeShots0">0</div>
+            <div class="column" id="orangeShots1">0</div>
+            <div class="column" id="orangeShots2">0</div>
+        </div>
+        <div class="row">
+            <div class="column" id="blueDemos0">0</div>
+            <div class="column" id="blueDemos1">0</div>
+            <div class="column" id="blueDemos2">0</div>
+            <div class="two wide column">DEMOS</div>
+            <div class="column" id="orangeDemos0">0</div>
+            <div class="column" id="orangeDemos1">0</div>
+            <div class="column" id="orangeDemos2">0</div>
+        </div>
+    </div>
+    <script>
+        const WsSubscribers = {
+            __subscribers: {},
+            websocket: undefined,
+            webSocketConnected: false,
+            registerQueue: [],
+            init: function (port, debug, debugFilters) {
+                port = port || 49322;
+                debug = debug || false;
+                if (debug) {
+                    if (debugFilters !== undefined) {
+                        console.warn("WebSocket Debug Mode enabled with filtering. Only events not in the filter list will be dumped");
+                    } else {
+                        console.warn("WebSocket Debug Mode enabled without filters applied. All events will be dumped to console");
+                        console.warn("To use filters, pass in an array of 'channel:event' strings to the second parameter of the init function");
+                    }
+                }
+                WsSubscribers.webSocket = new WebSocket("ws://localhost:" + port);
+                WsSubscribers.webSocket.onmessage = function (event) {
+                    let jEvent = JSON.parse(event.data);
+                    if (!jEvent.hasOwnProperty('event')) {
+                        return;
+                    }
+                    let eventSplit = jEvent.event.split(':');
+                    let channel = eventSplit[0];
+                    let event_event = eventSplit[1];
+                    if (debug) {
+                        if (!debugFilters) {
+                            console.log(channel, event_event, jEvent);
+                        } else if (debugFilters && debugFilters.indexOf(jEvent.event) < 0) {
+                            console.log(channel, event_event, jEvent);
+                        }
+                    }
+                    WsSubscribers.triggerSubscribers(channel, event_event, jEvent.data);
+                };
+                WsSubscribers.webSocket.onopen = function () {
+                    WsSubscribers.triggerSubscribers("ws", "open");
+                    WsSubscribers.webSocketConnected = true;
+                    WsSubscribers.registerQueue.forEach((r) => {
+                        WsSubscribers.send("wsRelay", "register", r);
+                    });
+                    WsSubscribers.registerQueue = [];
+                };
+                WsSubscribers.webSocket.onerror = function () {
+                    WsSubscribers.triggerSubscribers("ws", "error");
+                    WsSubscribers.webSocketConnected = false;
+                };
+                WsSubscribers.webSocket.onclose = function () {
+                    WsSubscribers.triggerSubscribers("ws", "close");
+                    WsSubscribers.webSocketConnected = false;
+                };
+            },
+            /**
+             * Add callbacks for when certain events are thrown
+             * Execution is guaranteed to be in First In First Out order
+             * @param channels
+             * @param events
+             * @param callback
+             */
+            subscribe: function (channels, events, callback) {
+                if (typeof channels === "string") {
+                    let channel = channels;
+                    channels = [];
+                    channels.push(channel);
+                }
+                if (typeof events === "string") {
+                    let event = events;
+                    events = [];
+                    events.push(event);
+                }
+                channels.forEach(function (c) {
+                    events.forEach(function (e) {
+                        if (!WsSubscribers.__subscribers.hasOwnProperty(c)) {
+                            WsSubscribers.__subscribers[c] = {};
+                        }
+                        if (!WsSubscribers.__subscribers[c].hasOwnProperty(e)) {
+                            WsSubscribers.__subscribers[c][e] = [];
+                            if (WsSubscribers.webSocketConnected) {
+                                WsSubscribers.send("wsRelay", "register", `${c}:${e}`);
+                            } else {
+                                WsSubscribers.registerQueue.push(`${c}:${e}`);
+                            }
+                        }
+                        WsSubscribers.__subscribers[c][e].push(callback);
+                    });
+                })
+            },
+            clearEventCallbacks: function (channel, event) {
+                if (WsSubscribers.__subscribers.hasOwnProperty(channel) && WsSubscribers.__subscribers[channel].hasOwnProperty(event)) {
+                    WsSubscribers.__subscribers[channel] = {};
+                }
+            },
+            triggerSubscribers: function (channel, event, data) {
+                if (WsSubscribers.__subscribers.hasOwnProperty(channel) && WsSubscribers.__subscribers[channel].hasOwnProperty(event)) {
+                    WsSubscribers.__subscribers[channel][event].forEach(function (callback) {
+                        if (callback instanceof Function) {
+                            callback(data);
+                        }
+                    });
+                }
+            },
+            send: function (channel, event, data) {
+                if (typeof channel !== 'string') {
+                    console.error("Channel must be a string");
+                    return;
+                }
+                if (typeof event !== 'string') {
+                    console.error("Event must be a string");
+                    return;
+                }
+                if (channel === 'local') {
+                    this.triggerSubscribers(channel, event, data);
+                } else {
+                    let cEvent = channel + ":" + event;
+                    WsSubscribers.webSocket.send(JSON.stringify({
+                        'event': cEvent,
+                        'data': data
+                    }));
+                }
+            }
+        };
+        $(() => {
+            WsSubscribers.init(49322, true);
+            WsSubscribers.subscribe("game", "update_state", (d) => {
+                // Scoreboard + Timer + Team Names
+                $('#blueScore').text(d['game']['teams'][0]['score']);
+                $('#orangeScore').text(d['game']['teams'][1]['score']);
+
+                // group players by team
+                let team = _.groupBy(d['players'], 'team');
+
+                // iterate through players and fill information
+                // blue
+                for (let i = 0; i < 3; i++) {
+                    $(`#blueBoostBar${i}`).progress({
+                        percent: d['players'][team[0][i]['id']]['boost'],
+                        autoSuccess: false
+                    });
+                    $(`#bluePlayer${i}`).text(d['players'][team[0][i]['id']]['name']);
+                    $(`#blueScore${i}`).text(d['players'][team[0][i]['id']]['score']);
+                    $(`#blueGoals${i}`).text(d['players'][team[0][i]['id']]['goals']);
+                    $(`#blueAsst${i}`).text(d['players'][team[0][i]['id']]['assists']);
+                    $(`#blueSaves${i}`).text(d['players'][team[0][i]['id']]['saves']);
+                    $(`#blueShots${i}`).text(d['players'][team[0][i]['id']]['shots']);
+                    $(`#blueDemos${i}`).text(d['players'][team[0][i]['id']]['demos']);
+                    resize_to_fit(`#bluePlayer${i}`, 185);
+                }
+                // orange
+                for (let i = 0; i < 3; i++) {
+                    $(`#orangeBoostBar${i}`).progress({
+                        percent: d['players'][team[1][i]['id']]['boost'],
+                        autoSuccess: false
+                    });
+                    $(`#orangePlayer${i}`).text(d['players'][team[1][i]['id']]['name']);
+                    $(`#orangeScore${i}`).text(d['players'][team[1][i]['id']]['score']);
+                    $(`#orangeGoals${i}`).text(d['players'][team[1][i]['id']]['goals']);
+                    $(`#orangeAsst${i}`).text(d['players'][team[1][i]['id']]['assists']);
+                    $(`#orangeSaves${i}`).text(d['players'][team[1][i]['id']]['saves']);
+                    $(`#orangeShots${i}`).text(d['players'][team[1][i]['id']]['shots']);
+                    $(`#orangeDemos${i}`).text(d['players'][team[1][i]['id']]['demos']);
+                    resize_to_fit(`#orangePlayer${i}`, 185);
+                }
+            });
+            $(document).ready(function () {
+                /*for (let i = 0; i < 3; i++) {
+                  resize_to_fit(`#bluePlayer${i}`, 185);
+                  resize_to_fit(`#orangePlayer${i}`, 185);
+                }*/
+            });
+            // recursive function to shrink font-size of selected element until it's width < width
+            function resize_to_fit(text, width) {
+                var fontsize = $(text).css('font-size');
+
+                if (textWidth(text) >= width) {
+                    $(text).css('fontSize', parseFloat(fontsize) - 1);
+                    resize_to_fit(text, width);
+                }
+            }
+            // calculate width of a given text string using <span>
+            function textWidth(text) {
+                var html_org = $(text).html();
+                var html_calc = '<span>' + html_org + '</span>';
+                $(text).html(html_calc);
+                var width = $(text).find('span:first').width();
+                $(text).html(html_org);
+                return width;
+            }
+        });
+    </script>
+</body>
+
+</html>

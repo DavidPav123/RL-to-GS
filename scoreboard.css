@@ -1,0 +1,55 @@
+body {
+    font-family: 'Montserrat';
+    font-size: 24pt;
+    font-weight: bold;
+    color: white;
+    background-color: green;
+    background-image: url(https://cdn.discordapp.com/attachments/820605164431081474/1024437460412944474/ESU_RL_Scoreboard.png);
+}
+
+#finalScore {
+    width: 1650px!important;
+    font-size: 32pt;
+    padding-top: 60px;
+}
+
+#finalScore>.column {
+    text-align: center;
+}
+
+#scoreboard {
+    width: 1920px!important;
+    padding-top: 100px;
+}
+
+#scoreboard>.row {
+    padding-bottom: 45px;
+}
+
+#scoreboard>.row>.column {
+    width: 200px;
+    margin-left: 25px;
+    margin-right: 25px;
+    text-align: center;
+}
+
+/*
+#bluePlayer0, #bluePlayer1, #bluePlayer2,
+#blueScore0, #blueScore1, #blueScore2,
+#blueGoals0, #blueGoals1, #blueGoals2,
+#blueAsst0, #blueAsst1, #blueAsst2,
+#blueSaves0, #blueSaves1, #blueSaves2,
+#blueShots0, #blueShots1, #blueShots2,
+#blueDemos0, #blueDemos1, #blueDemos2 {
+    text-align: left!important;
+}
+
+#orangePlayer0, #orangePlayer1, #orangePlayer2,
+#orangeScore0, #orangeScore1, #orangeScore2,
+#orangeGoals0, #orangeGoals1, #orangeGoals2,
+#orangeAsst0, #orangeAsst1, #orangeAsst2,
+#orangeSaves0, #orangeSaves1, #orangeSaves2,
+#orangeShots0, #orangeShots1, #orangeShots2,
+#orangeDemos0, #orangeDemos1, #orangeDemos2 {
+    text-align: right!important;
+}*/
